@@ -1,0 +1,35 @@
+import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+// import 'package:flutter_linkify/flutter_linkify.dart';
+
+class SpashScreen extends StatelessWidget {
+  const SpashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        // bottomNavigationBar: const Padding(
+        //   padding: EdgeInsets.all(8.0),
+        //   child: SelectableLinkify(text: "Gifs Made by https://storyset.com/book", textAlign: TextAlign.center),
+        // ),
+        body: FlutterSplashScreen.fadeIn(
+            childWidget: const Center(child: Icon(Icons.note_alt_rounded, color: Colors.amber, size: 200)),
+            backgroundColor: Colors.white,
+            asyncNavigationCallback: () async {
+              await Future.delayed(const Duration(seconds: 3));
+              if (context.mounted) {
+                Get.offNamed('authPage'); // Replace current route
+              }
+            }
+            //  var response = await userRepository.getUserData();
+            // if(response.status == 200 && response.data.isAuthenticated){
+            //  GoRouter.of(context).goNamed("home");
+            // }
+            // else{
+            //     // GoRouter.of(context).goNamed("/");
+            // }
+
+            ));
+  }
+}
