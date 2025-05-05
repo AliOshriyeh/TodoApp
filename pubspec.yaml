@@ -35,13 +35,15 @@ dependencies:
   get_it: ^8.0.3
   sqflite: ^2.3.3+1
   equatable: ^2.0.7
-  # flutter_svg: ^2.0.17
+  flutter_svg: ^2.0.17
   # google_fonts: ^6.2.1
   # toastification: ^1.0.2
   # connectivity_plus: ^2.2.1
+  flutter_slidable: ^3.1.2
+  # awesome_dialog: ^3.2.0
   supabase_flutter: ^2.0.0
-  shared_preferences: ^2.2.2
-  omni_datetime_picker: ^2.0.4
+  # shared_preferences: ^2.2.2
+  # omni_datetime_picker: ^2.0.4
   # persian_number_utility: ^1.1.4
   another_flutter_splash_screen: ^1.2.0
   flutter:
@@ -72,34 +74,38 @@ flutter:
 
   assets:
     - assets/imgs/google_logo.png
-    - assets/fonts/Mulish-Black.ttf
-    - assets/fonts/Mulish-ExtraBold.ttf
-    - assets/fonts/Mulish-Bold.ttf
-    - assets/fonts/Mulish-SemiBold.ttf
-    - assets/fonts/Mulish-Medium.ttf
-    - assets/fonts/Mulish-Regular.ttf
-    - assets/fonts/Mulish-Light.ttf
-    - assets/fonts/Mulish-ExtraLight.ttf
+    - assets/imgs/profile.jpg
+    - assets/fonts/SF-Pro-Text-Black.otf
+    - assets/fonts/SF-Pro-Text-Bold.otf
+    - assets/fonts/SF-Pro-Text-Heavy.otf
+    - assets/fonts/SF-Pro-Text-Light.otf
+    - assets/fonts/SF-Pro-Text-Medium.otf
+    - assets/fonts/SF-Pro-Text-Regular.otf
+    - assets/fonts/SF-Pro-Text-SemiBold.otf
+    - assets/fonts/SF-Pro-Text-Thin.otf
+    - assets/fonts/SF-Pro-Text-Ultralight.otf
 
   fonts:
-    - family: Mulish
+    - family: SFProText
       fonts:
-        - asset: assets/fonts/Mulish-Black.ttf
+        - asset: assets/fonts/SF-Pro-Text-Black.otf
           weight: 900
-        - asset: assets/fonts/Mulish-ExtraBold.ttf
+        - asset: assets/fonts/SF-Pro-Text-Heavy.otf
           weight: 800
-        - asset: assets/fonts/Mulish-Bold.ttf
+        - asset: assets/fonts/SF-Pro-Text-Bold.otf
           weight: 700
-        - asset: assets/fonts/Mulish-SemiBold.ttf
+        - asset: assets/fonts/SF-Pro-Text-SemiBold.otf
           weight: 600
-        - asset: assets/fonts/Mulish-Medium.ttf
+        - asset: assets/fonts/SF-Pro-Text-Medium.otf
           weight: 500
-        - asset: assets/fonts/Mulish-Regular.ttf
+        - asset: assets/fonts/SF-Pro-Text-Regular.otf
           weight: 400
-        - asset: assets/fonts/Mulish-Light.ttf
+        - asset: assets/fonts/SF-Pro-Text-Light.otf
           weight: 300
-        - asset: assets/fonts/Mulish-ExtraLight.ttf
+        - asset: assets/fonts/SF-Pro-Text-Thin.otf
           weight: 200
+        - asset: assets/fonts/SF-Pro-Text-Ultralight.otf
+          weight: 100
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

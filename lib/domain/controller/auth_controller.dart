@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:task01/routes/app_routes.dart';
 
 class AuthController extends GetxController {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -12,6 +13,8 @@ class AuthController extends GetxController {
   final TextEditingController confirmPasswordController = TextEditingController();
 
   RxBool obscurePass = true.obs;
+  RxBool obscureConfPass = true.obs;
+  RxBool doesPassMatch = true.obs;
 
   @override
   void onInit() {
@@ -53,7 +56,7 @@ class AuthController extends GetxController {
       );
       _user.value = response.user;
       Get.snackbar("Welcome", "You are logged in!");
-      Get.offNamed('/homepage');
+      Get.offNamed(AppRoutes.tasklist);
     } on AuthException catch (error) {
       Get.snackbar('Sign In Error', error.message);
     } catch (error) {
@@ -65,7 +68,7 @@ class AuthController extends GetxController {
     try {
       await _supabase.auth.signOut();
       _user.value = null;
-      Get.offNamed("/authPage");
+      Get.offNamed(AppRoutes.signin);
     } catch (error) {
       Get.snackbar('Error', 'Error signing out');
     }

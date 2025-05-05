@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task01/data/providers/supabase_API.dart';
+import 'package:task01/presentation/pages/list_task_page.dart';
 
 import 'package:task01/presentation/theme/app_theme.dart';
-import 'package:task01/presentation/pages/spash_screen.dart';
 
 import 'package:task01/routes/app_pages.dart';
 
@@ -21,11 +21,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //FIXME -  SystemChannels.textInput.invokeMethod('TextInput.hide');
     return GetMaterialApp(
       theme: appThemeData,
       debugShowCheckedModeBanner: false,
-      home: const SpashScreen(),
+      home: TaskListPage(),
       getPages: AppPages.routes,
     );
   }
