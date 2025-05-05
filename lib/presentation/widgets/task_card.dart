@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:task01/configs/util.dart';
 import 'package:task01/data/models/task_model.dart';
+import 'package:task01/domain/binding/edit_task_binding.dart';
 import 'package:task01/domain/controller/task_controller.dart';
 import 'package:task01/presentation/pages/edit_task_page.dart';
 import 'package:task01/presentation/theme/app_colors.dart';
@@ -85,7 +86,7 @@ class TaskCard extends StatelessWidget {
   void _editTask(BuildContext context) async {
     Slidable.of(context)?.close();
     // Navigate to edit page
-    await Get.to(() => EditTaskPage(task: task));
+    await Get.to(() => EditTaskPage(task: task), binding: EditTaskBinding());
     _taskController.fetchTasks();
   }
 

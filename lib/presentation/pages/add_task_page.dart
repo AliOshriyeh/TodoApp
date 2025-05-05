@@ -1,11 +1,14 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:task01/configs/util.dart';
 import 'package:task01/data/models/task_model.dart';
 import 'package:task01/domain/controller/add_task_controller.dart';
 import 'package:task01/domain/controller/task_controller.dart';
+import 'package:task01/presentation/theme/app_colors.dart';
+import 'package:task01/presentation/theme/app_text_style.dart';
 
 class AddTaskPage extends StatelessWidget {
   AddTaskPage({super.key});
@@ -65,26 +68,61 @@ class AddTaskPage extends StatelessWidget {
                   title: const Text('Due Date'),
                   subtitle: Text('${controller.selectedDate.value.toLocal()}'.split(' ')[0]),
                   trailing: const Icon(Icons.calendar_today),
-                  onTap: () async {
-                    final DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now().add(const Duration(days: 1)),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2101),
-                    );
-                    if (picked != null && picked != controller.selectedDate.value) {
-                      controller.updateDate(picked);
-                    }
-                  },
+                  onTap: () => _showCupertinoDatePicker(context),
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: _saveTask,
-                  child: const Text('Save Task'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  child: Text('Save Task', style: AppTextStyle.black16.copyWith(color: AppColors.white)),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showCupertinoDatePicker(BuildContext context) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 250,
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CupertinoButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                CupertinoButton(
+                  child: const Text('Done'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: CupertinoDatePicker(
+                mode: CupertinoDatePickerMode.date,
+                initialDateTime: DateTime.now().add(const Duration(days: 1)),
+                minimumDate: DateTime.now(),
+                maximumDate: DateTime(2101),
+                onDateTimeChanged: (DateTime newDate) {
+                  controller.updateDate(newDate);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

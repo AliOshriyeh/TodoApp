@@ -12,6 +12,7 @@ class AuthController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
+  final formKey = GlobalKey<FormState>();
   RxBool obscurePass = true.obs;
   RxBool obscureConfPass = true.obs;
   RxBool doesPassMatch = true.obs;
@@ -83,5 +84,35 @@ class AuthController extends GetxController {
     } catch (error) {
       Get.snackbar('Error', 'Unexpected error occurred');
     }
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!value.isEmail) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
   }
 }

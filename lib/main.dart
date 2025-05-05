@@ -2,9 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task01/data/providers/supabase_API.dart';
-import 'package:task01/presentation/pages/list_task_page.dart';
-
 import 'package:task01/presentation/theme/app_theme.dart';
+import 'package:task01/presentation/pages/list_task_page.dart';
 
 import 'package:task01/routes/app_pages.dart';
 
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: appThemeData,
       debugShowCheckedModeBanner: false,
-      home: TaskListPage(),
+      home: TaskListPage(), //const SpashScreen(),
       getPages: AppPages.routes,
     );
   }

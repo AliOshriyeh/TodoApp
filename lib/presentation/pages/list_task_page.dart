@@ -35,20 +35,20 @@ class TaskListPage extends StatelessWidget {
           //   icon: const Icon(Icons.refresh),
           //   onPressed: _taskController.fetchTasks,
           // ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: TextField(
-          //     decoration: const InputDecoration(
-          //       labelText: 'Search',
-          //       prefixIcon: Icon(Icons.search),
-          //       border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-          //     ),
-          //     onChanged: _taskController.filterTasks,
-          //   ),
-          // ),
 
           Expanded(
             child: Obx(() {
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: TextField(
+              //     decoration: const InputDecoration(
+              //       labelText: 'Search',
+              //       prefixIcon: Icon(Icons.search),
+              //       border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+              //     ),
+              //     onChanged: _taskController.filterTasks,
+              //   ),
+              // ),
               if (_taskController.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
