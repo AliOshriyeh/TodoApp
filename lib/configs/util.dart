@@ -1,3 +1,9 @@
+import 'package:flutter/material.dart';
+
+/// Utility functions for date, time, and form validation
+
+/// Converts 24-hour time to 12-hour format with AM/PM
+/// Example: 14:30 → "2:30 PM"
 String to12HourFormat(DateTime time) {
   int hour = time.hour;
   String period = hour < 12 ? 'AM' : 'PM';
@@ -6,7 +12,12 @@ String to12HourFormat(DateTime time) {
   return '$hour:${time.minute.toString().padLeft(2, '0')} $period';
 }
 
-// Add this to your util.dart file or create a new helper file
+/// Formats a date with relative terms (Today/Tomorrow/Yesterday) or weekday
+/// Example:
+/// - Same day → "Today"
+/// - Next day → "Tomorrow"
+/// - Previous day → "Yesterday"
+/// - Other dates → "Mon, Jun 5"
 String formatDate(DateTime date) {
   final now = DateTime.now();
   final difference = date.difference(DateTime(now.year, now.month, now.day)).inDays;
@@ -15,10 +26,20 @@ String formatDate(DateTime date) {
   if (difference == 1) return "Tomorrow";
   if (difference == -1) return "Yesterday";
 
-  // Format as "Weekday, Month Day" (e.g., "Monday, June 5")
+  // Format as "Weekday, Month Day" (e.g., "Mon, Jun 5")
   return "${_getWeekday(date.weekday)}, ${_getMonth(date.month)} ${date.day}";
 }
 
+/// Formats TimeOfDay to 12-hour format string
+/// Example: TimeOfDay(hour: 14, minute: 30) → "2:30 PM"
+String formatTime(TimeOfDay time) {
+  final hour = time.hourOfPeriod;
+  final minute = time.minute.toString().padLeft(2, '0');
+  final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+  return '$hour:$minute $period';
+}
+
+/// Returns abbreviated weekday name from weekday number (1-7)
 String _getWeekday(int weekday) {
   switch (weekday) {
     case 1:
@@ -40,6 +61,7 @@ String _getWeekday(int weekday) {
   }
 }
 
+/// Returns abbreviated month name from month number (1-12)
 String _getMonth(int month) {
   switch (month) {
     case 1:
@@ -71,10 +93,14 @@ String _getMonth(int month) {
   }
 }
 
+/// Checks if two DateTime objects represent the same calendar day
+/// Ignores time components, only compares year, month, and day
 bool isSameDay(DateTime date1, DateTime date2) {
-  return (date1.year == date2.year) && (date1.month == date2.month) && (date1.day == date2.day);
+  return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
 }
 
+/// Validates that a form field is not empty
+/// Returns error message if empty, null if valid
 String? requiredFieldValidator(String? value) {
   if (value == null || value.isEmpty) {
     return "Please fill this field";

@@ -4,13 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:task01/data/providers/sqflite_prov.dart';
 
 class TaskModel extends Equatable {
-  int id;
-  String title;
-  String desc;
-  final DateTime crt_date;
-  DateTime exp_date;
-  String status;
-  String priority;
+  // --- Task Properties ---
+  int id; // Unique identifier for the task
+  String title; // Title of the task
+  String desc; // Description of the task
+  final DateTime crt_date; // Creation date (immutable)
+  DateTime exp_date; // Expiration/due date
+  String status; // Task status (COMPLETE/INCOMPLETE)
+  String priority; // Task priority level
 
   TaskModel({
     required this.id,
@@ -22,10 +23,13 @@ class TaskModel extends Equatable {
     required this.status,
   });
 
+  // --- Equatable Implementation ---
   @override
-  // TODO: implement props
   List<Object?> get props => [id, title, desc, crt_date, exp_date, status, priority];
 
+  // --- Utility Methods ---
+
+  // Creates a copy of the task with updated fields
   TaskModel copyWith({
     int? id,
     String? title,
@@ -46,7 +50,9 @@ class TaskModel extends Equatable {
     );
   }
 
-  //Converting Database Item to App Object
+  // --- Database Conversion Methods ---
+
+  // Converts database map to TaskModel object
   factory TaskModel.fromMap(Map<String, dynamic> map) {
     var queryid = map[DatabaseProvider.COLUMN_ID] as int;
     var querytitle = map[DatabaseProvider.COLUMN_TITLE] as String;
@@ -67,7 +73,7 @@ class TaskModel extends Equatable {
     );
   }
 
-  //Converting App Object to Database Item⁡
+  // Converts TaskModel object to database map
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       DatabaseProvider.COLUMN_ID: id == -1 ? null : id,
@@ -78,8 +84,6 @@ class TaskModel extends Equatable {
       DatabaseProvider.COLUMN_STATUS: status,
       DatabaseProvider.COLUMN_PRIORITY: priority,
     };
-
-    // map.forEach((key, value) => debugPrint(printSignifier +"$key -> $value AS ${value.runtimeType}"));
     return map;
   }
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+/// Centralized text style configuration for the application
 class AppTextStyle {
-  static const String _defaultFont = 'Mulish';
+  // Font configuration
+  static const String _defaultFont = 'SFProText';
 
+  // Font weights
   static const FontWeight _extraLightFontWeight = FontWeight.w200;
   static const FontWeight _lightFontWeight = FontWeight.w300;
   static const FontWeight _regularFontWeight = FontWeight.w400;
@@ -12,6 +16,7 @@ class AppTextStyle {
   static const FontWeight _heavyFontWeight = FontWeight.w800;
   static const FontWeight _blackFontWeight = FontWeight.w900;
 
+  // Font sizes
   static const double _size3XS = 9;
   static const double _size2XS = 10;
   static const double _sizeXS = 12;
@@ -32,6 +37,7 @@ class AppTextStyle {
       fontSize: size,
       fontWeight: fontWeight,
       fontFamily: _defaultFont,
+      color: Get.theme.textTheme.titleMedium?.color,
     );
   }
 

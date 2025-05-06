@@ -1,15 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:task01/presentation/theme/app_colors.dart';
 import 'package:task01/presentation/theme/app_text_style.dart';
 import 'package:task01/routes/app_routes.dart';
 import 'package:task01/domain/controller/auth_controller.dart';
 
+/// Sign up page for user registration
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
-  final AuthController authController = Get.find();
+  final AuthController authController = Get.find(); // Auth controller instance
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +25,15 @@ class SignUpPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // Header
                   const Text(
                     'SIGN UP',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 40),
+
+                  // Email input field
                   TextFormField(
                     controller: authController.emailController,
                     validator: authController.validateEmail,
@@ -42,6 +43,8 @@ class SignUpPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+
+                  // Password input field with visibility toggle
                   TextFormField(
                     controller: authController.passwordController,
                     obscureText: authController.obscurePass.value,
@@ -56,6 +59,8 @@ class SignUpPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+
+                  // Confirm password field
                   TextFormField(
                     controller: authController.confirmPasswordController,
                     obscureText: authController.obscureConfPass.value,
@@ -70,6 +75,8 @@ class SignUpPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // Sign up button
                   ElevatedButton(
                     onPressed: () {
                       if (authController.formKey.currentState!.validate()) {
@@ -80,13 +87,15 @@ class SignUpPage extends StatelessWidget {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.black,
+                      backgroundColor: Get.theme.unselectedWidgetColor,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: Text('Sign Up', style: AppTextStyle.black16.copyWith(color: AppColors.white)),
+                    child: Text('Sign Up', style: AppTextStyle.black16.copyWith(color: Get.theme.scaffoldBackgroundColor)),
                   ),
                   const SizedBox(height: 24),
+
+                  // Divider with "Or" text
                   const Row(
                     children: [
                       Expanded(child: Divider()),
@@ -95,6 +104,8 @@ class SignUpPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
+
+                  // Login redirect
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -1,20 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:task01/configs/util.dart';
-import 'package:task01/data/models/task_model.dart';
+
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:task01/domain/binding/edit_task_binding.dart';
 import 'package:task01/domain/controller/task_controller.dart';
 import 'package:task01/presentation/pages/edit_task_page.dart';
-import 'package:task01/presentation/theme/app_colors.dart';
-import 'package:task01/presentation/theme/app_text_style.dart';
+
+import 'package:task01/presentation/theme/index_theme.dart';
+import 'package:task01/data/models/task_model.dart';
 import 'package:task01/routes/app_routes.dart';
 
+/// Interactive task card with swipe-to-edit/delete functionality
 class TaskCard extends StatelessWidget {
-  final TaskModel task;
+  final TaskModel task; // Task data to display
   TaskCard({super.key, required this.task});
 
-  final TaskController _taskController = Get.find();
+  final TaskController _taskController = Get.find(); // Task controller instance
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +24,12 @@ class TaskCard extends StatelessWidget {
     bool isToday = isSameDay(task.exp_date, DateTime.now());
 
     return Slidable(
-      // Only allow sliding if the task is not completed
-      enabled: !tstatus,
+      enabled: !tstatus, // Disable sliding for completed tasks
       key: ValueKey(task.id),
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         children: [
-          // Edit button
+          // Edit action button
           SlidableAction(
             onPressed: (context) => _editTask(context),
             backgroundColor: AppColors.primaryAccent,
@@ -36,7 +37,7 @@ class TaskCard extends StatelessWidget {
             icon: Icons.edit,
             label: 'Edit',
           ),
-          // Delete button
+          // Delete action button
           SlidableAction(
             onPressed: (context) => _deleteTask(context),
             backgroundColor: AppColors.red,
@@ -67,15 +68,15 @@ class TaskCard extends StatelessWidget {
                   child: Checkbox(
                     side: const BorderSide(color: AppColors.lightGray, width: 2),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                    checkColor: AppColors.white,
-                    fillColor: WidgetStatePropertyAll(tstatus ? AppColors.black : AppColors.white),
+                    checkColor: Get.theme.scaffoldBackgroundColor,
+                    fillColor: WidgetStatePropertyAll(tstatus ? Get.theme.unselectedWidgetColor : Get.theme.scaffoldBackgroundColor),
                     value: tstatus,
                     onChanged: (bool? value) async => await _taskController.updateTaskStatus(task),
                   ),
                 )
-              : const Icon(
+              : Icon(
                   Icons.circle_rounded,
-                  color: AppColors.black,
+                  color: Get.theme.unselectedWidgetColor,
                   size: 16,
                 ),
         ),
@@ -83,16 +84,16 @@ class TaskCard extends StatelessWidget {
     );
   }
 
+  /// Navigates to edit task page
   void _editTask(BuildContext context) async {
     Slidable.of(context)?.close();
-    // Navigate to edit page
     await Get.to(() => EditTaskPage(task: task), binding: EditTaskBinding());
     _taskController.fetchTasks();
   }
 
+  /// Shows confirmation dialog and deletes task
   void _deleteTask(BuildContext context) {
     Slidable.of(context)?.close();
-    // Show confirmation dialog
     Get.defaultDialog(
       titlePadding: const EdgeInsets.all(10),
       contentPadding: const EdgeInsets.all(20),
@@ -112,37 +113,3 @@ class TaskCard extends StatelessWidget {
     );
   }
 }
-
-Color _getPriorityColor(String priority) {
-  switch (priority) {
-    case 'HIGH':
-      return Colors.red;
-    case 'NORMAL':
-      return Colors.blue;
-    case 'LOW':
-      return Colors.green;
-    default:
-      return Colors.grey;
-  }
-}
-
-//   subtitle: Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text(task.desc),
-//       const SizedBox(height: 4),
-//           Container(
-//             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-//             decoration: BoxDecoration(
-//               color: _getPriorityColor(task.priority),
-//               borderRadius: BorderRadius.circular(10),
-//             ),
-//             child: Text(
-//               task.priority,
-//               style: const TextStyle(color: Colors.white, fontSize: 12),
-//             ),
-//           ),
-//         ],
-//       ),
-//     ],
-//   ),

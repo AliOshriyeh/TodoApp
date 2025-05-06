@@ -4,15 +4,18 @@ import 'package:task01/data/models/task_model.dart';
 import 'package:task01/domain/controller/task_controller.dart';
 
 class EditTaskController extends GetxController {
+  // --- Dependencies ---
   final TaskController taskController = Get.find<TaskController>();
 
+  // --- Form State ---
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final descController = TextEditingController();
   final priorityController = TextEditingController();
   final selectedDate = Rx<DateTime>(DateTime.now());
-  final status = Rx<String>('INCOMPLETE');
+  final status = Rx<String>('INCOMPLETE'); // Task status
 
+  // --- Initialization ---
   void initializeWithTask(TaskModel task) {
     titleController.text = task.title;
     descController.text = task.desc;
@@ -21,6 +24,7 @@ class EditTaskController extends GetxController {
     status.value = task.status;
   }
 
+  // --- Task Operations ---
   Future<void> updateTask(TaskModel originalTask) async {
     if (!formKey.currentState!.validate()) {
       Get.snackbar('Error', 'Please fill all required fields');
@@ -42,6 +46,7 @@ class EditTaskController extends GetxController {
 
   @override
   void onClose() {
+    // Clean up controllers
     titleController.dispose();
     descController.dispose();
     priorityController.dispose();

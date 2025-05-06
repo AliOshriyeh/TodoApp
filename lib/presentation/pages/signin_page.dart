@@ -1,16 +1,14 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:task01/domain/controller/auth_controller.dart';
 import 'package:task01/presentation/theme/app_assets.dart';
-import 'package:task01/presentation/theme/app_colors.dart';
 import 'package:task01/presentation/theme/app_text_style.dart';
 import 'package:task01/routes/app_routes.dart';
 
+/// Sign in page for user authentication
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
-  final AuthController authController = Get.find();
+  final AuthController authController = Get.find(); // Auth controller instance
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +25,15 @@ class SignInPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Header
                 const Text(
                   'Welcome',
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
+
+                // Email field
                 TextFormField(
                   controller: authController.emailController,
                   validator: authController.validateEmail,
@@ -42,6 +43,8 @@ class SignInPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+
+                // Password field with visibility toggle
                 Obx(
                   () => TextFormField(
                     controller: authController.passwordController,
@@ -57,16 +60,18 @@ class SignInPage extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                // Forgot password link
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {
-                      // Get.toNamed(AppRoutes.forgotPassword);
-                    },
+                    onPressed: () {},
                     child: const Text('Forgot your password?'),
                   ),
                 ),
                 const SizedBox(height: 24),
+
+                // Login button
                 ElevatedButton(
                   onPressed: () {
                     if (authController.formKey.currentState!.validate()) {
@@ -77,13 +82,15 @@ class SignInPage extends StatelessWidget {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.black,
+                    backgroundColor: Get.theme.unselectedWidgetColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
-                  child: Text('Login', style: AppTextStyle.black16.copyWith(color: AppColors.white)),
+                  child: Text('Login', style: AppTextStyle.black16.copyWith(color: Get.theme.scaffoldBackgroundColor)),
                 ),
                 const SizedBox(height: 24),
+
+                // Divider with "Or" text
                 const Row(
                   children: [
                     Expanded(child: Divider()),
@@ -92,10 +99,10 @@ class SignInPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 24),
+
+                // Google login button
                 OutlinedButton.icon(
-                  onPressed: () {
-                    // Handle Google login
-                  },
+                  onPressed: () {},
                   icon: Image.asset(AppAssets.google_logo, height: 24),
                   label: const Text('Login with Google'),
                   style: OutlinedButton.styleFrom(
@@ -103,6 +110,8 @@ class SignInPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                // Sign up redirect
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

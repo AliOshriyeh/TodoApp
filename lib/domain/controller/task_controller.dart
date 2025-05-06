@@ -4,16 +4,18 @@ import 'package:task01/data/models/task_model.dart';
 import 'package:task01/data/providers/sqflite_prov.dart';
 
 class TaskController extends GetxController {
-  var tasks = <TaskModel>[].obs;
-  var isLoading = true.obs;
-  var searchQuery = ''.obs;
+  // --- Task State ---
+  var tasks = <TaskModel>[].obs; // Observable list of tasks
+  var isLoading = true.obs; // Loading state
+  var searchQuery = ''.obs; // Search query for filtering
 
   @override
   void onInit() {
     super.onInit();
-    fetchTasks();
+    fetchTasks(); // Load tasks on initialization
   }
 
+  // --- Database Operations ---
   Future<void> fetchTasks() async {
     try {
       isLoading(true);
@@ -81,6 +83,7 @@ class TaskController extends GetxController {
     }
   }
 
+  // --- Task Filtering & Grouping ---
   void filterTasks(String query) {
     searchQuery.value = query.toLowerCase();
   }
