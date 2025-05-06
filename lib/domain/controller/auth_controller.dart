@@ -4,22 +4,27 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task01/routes/app_routes.dart';
 
 class AuthController extends GetxController {
-  final SupabaseClient _supabase = Supabase.instance.client;
-  final Rx<User?> _user = Rx<User?>(null);
-  User? get user => _user.value;
+  SupabaseClient supabase = Supabase.instance.client;
 
+  // --- Supabase & User Management ---
+  final Rx<User?> _user = Rx<User?>(null);
+  User? get user => _user.value; // Current authenticated user
+
+  // --- Form Controllers ---
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
+  // --- Form State ---
   final formKey = GlobalKey<FormState>();
-  RxBool obscurePass = true.obs;
-  RxBool obscureConfPass = true.obs;
-  RxBool doesPassMatch = true.obs;
+  RxBool obscurePass = true.obs; // Toggle password visibility
+  RxBool obscureConfPass = true.obs; // Toggle confirm password visibility
+  RxBool doesPassMatch = true.obs; // Password matching state
 
   @override
   void onInit() {
-    _supabase.auth.onAuthStateChange.listen((AuthState data) {
+    // Listen to auth state changes
+    supabase.auth.onAuthStateChange.listen((AuthState data) {
       final AuthChangeEvent event = data.event;
       final Session? session = data.session;
 
@@ -31,13 +36,14 @@ class AuthController extends GetxController {
     });
 
     // Get initial user if already logged in
-    _user.value = _supabase.auth.currentUser;
+    _user.value = supabase.auth.currentUser;
     super.onInit();
   }
 
+  // --- Auth Methods ---
   Future<void> signUp(String email, String password) async {
     try {
-      final AuthResponse response = await _supabase.auth.signUp(
+      final AuthResponse response = await supabase.auth.signUp(
         email: email,
         password: password,
       );
@@ -51,7 +57,7 @@ class AuthController extends GetxController {
 
   Future<void> signIn(String email, String password) async {
     try {
-      final AuthResponse response = await _supabase.auth.signInWithPassword(
+      final AuthResponse response = await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
@@ -67,7 +73,7 @@ class AuthController extends GetxController {
 
   Future<void> signOut() async {
     try {
-      await _supabase.auth.signOut();
+      await supabase.auth.signOut();
       _user.value = null;
       Get.offNamed(AppRoutes.signin);
     } catch (error) {
@@ -77,7 +83,7 @@ class AuthController extends GetxController {
 
   Future<void> resetPassword(String email) async {
     try {
-      await _supabase.auth.resetPasswordForEmail(email);
+      await supabase.auth.resetPasswordForEmail(email);
       Get.snackbar('Success', 'Password reset email sent');
     } on AuthException catch (error) {
       Get.snackbar('Error', error.message);
@@ -86,6 +92,7 @@ class AuthController extends GetxController {
     }
   }
 
+  // --- Form Validators ---
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your email';
@@ -114,5 +121,11 @@ class AuthController extends GetxController {
       return 'Passwords do not match';
     }
     return null;
+  }
+
+  // For testing only
+  @visibleForTesting
+  void setSupabaseClient(SupabaseClient client) {
+    supabase = client;
   }
 }

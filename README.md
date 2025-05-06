@@ -1,16 +1,32 @@
-# task01
+# TodoApp - Flutter Task Manager
 
-A new Flutter project.
+A beautiful, cross-platform task management app built with Flutter and Supabase, featuring authentication, real-time sync, and offline support.
 
-## Getting Started
+## ✨ Features
 
-This project is a starting point for a Flutter application.
+- 🔐 **Secure Authentication** (Email/Password)
+- ✅ **Task Management** (Create, Read, Update, Delete)
+- 📅 **Due Date Tracking** with smart reminders
+- 🏷️ **Priority & Status** (High/Medium/Low, Complete/Incomplete)
+- 🌙 **Dark/Light Theme** support
+- 📱 **Responsive Design** for mobile & tablet
+- 🔄 **Real-time Sync** with Supabase backend
+- ⚡ **Offline Support** with local SQLite cache
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Frontend**: Flutter 3.x
+- **Backend**: [Supabase](https://supabase.io) (PostgreSQL + Auth + Storage)
+- **State Management**: GetX
+- **Local Database**: SQLite (sqflite)
+- **Testing**: flutter_test + Mockito
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 🛠️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/alioshriyeh/TodoApp.git
+   cd taskflow
+   flutter pub get
+   flutter run --android

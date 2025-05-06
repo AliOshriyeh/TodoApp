@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
+import 'package:task01/configs/notification_service.dart';
 import 'package:task01/routes/app_routes.dart';
 import 'package:task01/data/models/task_model.dart';
 import 'package:task01/data/providers/sqflite_prov.dart';
 
 class TaskController extends GetxController {
+  DatabaseProvider databaseProvider = DatabaseProvider.instance;
+
   // --- Task State ---
   var tasks = <TaskModel>[].obs; // Observable list of tasks
   var isLoading = true.obs; // Loading state
@@ -12,6 +15,7 @@ class TaskController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    checkDueTasks();
     fetchTasks(); // Load tasks on initialization
   }
 
@@ -34,6 +38,7 @@ class TaskController extends GetxController {
       int id = await DatabaseProvider.instance.insertTask(task);
       task.id = id; // Update the task with the new ID
       tasks.add(task);
+      await task.scheduleNotification();
       Get.snackbar('Success', 'Task added');
       Get.offAllNamed(AppRoutes.tasklist);
     } catch (e) {
@@ -50,6 +55,10 @@ class TaskController extends GetxController {
       final index = tasks.indexWhere((task) => task.id == updatedTask.id);
       if (index != -1) {
         tasks[index] = updatedTask;
+      }
+      await tasks[index].cancelNotification();
+      if (tasks[index].status != 'COMPLETE') {
+        await tasks[index].scheduleNotification();
       }
       Get.snackbar('Success', 'Task updated successfully');
       Get.offAllNamed(AppRoutes.tasklist);
@@ -77,6 +86,7 @@ class TaskController extends GetxController {
     try {
       await DatabaseProvider.instance.deleteTask(id);
       tasks.removeWhere((task) => task.id == id);
+      await NotificationService().cancelNotification(id);
       Get.snackbar('Success', 'Task deleted successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to delete task: $e');
@@ -120,5 +130,20 @@ class TaskController extends GetxController {
     }
 
     return sortedMap;
+  }
+
+  // Check for Due Tasks Periodically
+  void checkDueTasks() {
+    final now = DateTime.now();
+    for (final task in tasks) {
+      if (task.exp_date.isBefore(now.add(const Duration(minutes: 31))) && task.exp_date.isAfter(now) && task.status != 'COMPLETE') {
+        NotificationService().scheduleTaskNotification(
+          id: task.id,
+          title: 'Task Due Soon: ${task.title}',
+          body: 'Your task "${task.title}" is due soon',
+          dueDate: task.exp_date,
+        );
+      }
+    }
   }
 }

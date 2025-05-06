@@ -9,6 +9,13 @@ import 'package:task01/configs/consts.dart';
 import 'package:task01/data/models/task_model.dart';
 
 class DatabaseProvider {
+  // Add a setter for testing purposes
+  @visibleForTesting
+  set databaseForTesting(Future<Database> db) {
+    database = db;
+  }
+
+  // --- Database Constants ---
   static const String TABLE_TASK = "TaskModel";
   static const String COLUMN_ID = "id";
   static const String COLUMN_TITLE = "title";
@@ -18,9 +25,15 @@ class DatabaseProvider {
   static const String COLUMN_STATUS = "status";
   static const String COLUMN_PRIORITY = "priority";
 
-  DatabaseProvider._privateConstructor();
-  static final DatabaseProvider instance = DatabaseProvider._privateConstructor();
+  late Future<Database> database;
 
+  // --- Singleton Pattern ---
+  DatabaseProvider.privateConstructor() {
+    database = _initDatabase();
+  }
+  static final DatabaseProvider instance = DatabaseProvider.privateConstructor();
+
+  // --- Database Initialization ---
   Future<Database> _initDatabase() async {
     final dirPath = await getDatabasesPath();
     final dbDir = Directory(dirPath);
@@ -37,11 +50,7 @@ class DatabaseProvider {
     );
   }
 
-  Future<Database> get database async {
-    var newDatabase = await _initDatabase();
-    return newDatabase;
-  }
-
+  // --- Table Creation ---
   Future _onCreate(Database db, int version) async {
     debugPrint(printSignifier + "Creating TaskModel Table");
     await db.execute('''
@@ -56,9 +65,10 @@ class DatabaseProvider {
       )
     ''');
   }
-  // CRUD Operations
 
-  // Add
+  // --- CRUD Operations ---
+
+  // Create
   Future<int> insertTask(TaskModel task) async {
     debugPrint(printSignifier + "Inserting Tasks in Database...");
     Database db = await instance.database;
@@ -67,19 +77,16 @@ class DatabaseProvider {
     return id;
   }
 
-  // Read all
+  // Read All
   Future<List<TaskModel>> getTasks() async {
     debugPrint(printSignifier + "Fetching Tasks from Database...");
     Database db = await instance.database;
     final List<Map<String, dynamic>> maps = await db.query(TABLE_TASK);
 
-    List<TaskModel> taskList = List.generate(maps.length, (i) {
-      return TaskModel.fromMap(maps[i]);
-    });
-    return taskList;
+    return List.generate(maps.length, (i) => TaskModel.fromMap(maps[i]));
   }
 
-  // Read single
+  // Read Single
   Future<TaskModel?> getTask(int id) async {
     Database db = await instance.database;
     final maps = await db.query(
@@ -88,10 +95,7 @@ class DatabaseProvider {
       whereArgs: [id],
       limit: 1,
     );
-    if (maps.isNotEmpty) {
-      return TaskModel.fromMap(maps.first);
-    }
-    return null;
+    return maps.isNotEmpty ? TaskModel.fromMap(maps.first) : null;
   }
 
   // Update
@@ -111,6 +115,7 @@ class DatabaseProvider {
     return await db.delete(TABLE_TASK, where: 'id = ?', whereArgs: [id]);
   }
 
+  // --- Database Management ---
   void close() async {
     debugPrint(printSignifier + "Closing TaskModel Database...");
     Database db = await instance.database;

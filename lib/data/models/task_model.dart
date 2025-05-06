@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, must_be_immutable
 
 import 'package:equatable/equatable.dart';
+import 'package:task01/configs/notification_service.dart';
 import 'package:task01/data/providers/sqflite_prov.dart';
 
 class TaskModel extends Equatable {
@@ -85,5 +86,18 @@ class TaskModel extends Equatable {
       DatabaseProvider.COLUMN_PRIORITY: priority,
     };
     return map;
+  }
+
+  Future<void> scheduleNotification() async {
+    await NotificationService().scheduleTaskNotification(
+      id: id,
+      title: 'Task Due Soon: $title',
+      body: 'Your task "$title" is due in 30 minutes',
+      dueDate: exp_date,
+    );
+  }
+
+  Future<void> cancelNotification() async {
+    await NotificationService().cancelNotification(id);
   }
 }
